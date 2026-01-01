@@ -2,24 +2,20 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import login,authenticate,logout
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 from .form import RegisterForm
 
 
+
+@login_required
 def index(request):
-    return HttpResponse("Hello, world. You're at the index.")
+    return render(request, 'user/index.html')
 
-@login_required(login_url="/sign-in")
-def home(request):
-    # sign user out
-    print(request)
-    if request.method == "get":
-        logout(request)
-        return redirect(request, 'user/sign-in.html')
-
-    # Redirect to sign-in page
-    return render(request, 'user/home.html')
-
+def sign_out(request):
+    logout(request)
+    return redirect('/user')
+    
 def sign_in(request):
     if request.method == "POST":
         username = request.POST.get('username')
@@ -35,7 +31,7 @@ def sign_in(request):
         if user is not None:
             # Log user in
             login(request, user)
-            return redirect('/user/home')
+            return redirect('/user/')
             
     return render(request, 'user/sign-in.html')
 
@@ -45,7 +41,7 @@ def sign_up(request):
         print(form)
         if form.is_valid():
             form.save()
-            return redirect('/user/home')
+            return redirect('/user/')
     else:
         form = RegisterForm()
         print(form)
