@@ -2,31 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sign In</title>
+    <title>Sign Up</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             margin: 0;
             height: 100vh;
             font-family: Arial, Helvetica, sans-serif;
-            background: linear-gradient(135deg, #4f46e5, #9333ea);
+            background: linear-gradient(135deg, #22c55e, #16a34a);
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .login-container {
+        .signup-container {
             background: #ffffff;
             padding: 32px;
             width: 100%;
-            max-width: 360px;
+            max-width: 400px;
             border-radius: 10px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
 
-        .login-container h2 {
-            margin-bottom: 24px;
+        .signup-container h2 {
             text-align: center;
+            margin-bottom: 24px;
             color: #333;
         }
 
@@ -51,14 +51,14 @@
         }
 
         input:focus {
-            border-color: #6366f1;
+            border-color: #22c55e;
         }
 
         button {
             width: 100%;
             padding: 12px;
-            background: #6366f1;
-            color: #fff;
+            background: #22c55e;
+            color: #ffffff;
             font-size: 16px;
             border: none;
             border-radius: 6px;
@@ -67,17 +67,17 @@
         }
 
         button:hover {
-            background: #4f46e5;
+            background: #16a34a;
         }
 
         .extra {
-            margin-top: 16px;
             text-align: center;
+            margin-top: 16px;
             font-size: 14px;
         }
 
         .extra a {
-            color: #6366f1;
+            color: #22c55e;
             text-decoration: none;
         }
 
@@ -88,25 +88,34 @@
 </head>
 <body>
 
-    <div class="login-container">
-        <h2>Sign In</h2>
-        <form method="POST" action="{% url 'sign-in' %}">
-            {% csrf_token %}
+    <div class="signup-container">
+        <h2>Create Account</h2>
+        <form>
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Enter your Username" required>
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <input type="password" id="password" placeholder="Create a password" required>
             </div>
 
-            <button type="submit">Sign In</button>
+            <div class="form-group">
+                <label for="confirm">Confirm Password</label>
+                <input type="password" id="confirm" placeholder="Confirm your password" required>
+            </div>
+
+            <button type="submit">Sign Up</button>
         </form>
 
         <div class="extra">
-            <p>Don’t have an account? <a href="{% url 'sign-up' %}">Sign up</a></p>
+            <p>Already have an account? <a href="{% url 'sign-in' %}">Sign in</a></p>
         </div>
     </div>
 
