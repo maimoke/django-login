@@ -1,6 +1,6 @@
 Login system test using Django
 
-test command
+use this command to start server
 ```
 cd login
 python manage.py runserver
