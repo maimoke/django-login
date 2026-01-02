@@ -53,13 +53,17 @@ def sign_up(request):
         print(email)
         print(password)
         print(confirm)
-        if (password == confirm):
-            user = User.objects.create_user(username = username, email= email, password= password)
-            user.save()
-            login(request, user)
-            return redirect('/user/')
+        user = User.objects.filter(username = username).first()
+        if user is not None:
+            messages.info(request,"Sign up not successful. There is already user with this username")
         else:
-            messages.info(request, "Sign up not successful. Please check your password and confirm password")
+            if (password == confirm):
+                user = User.objects.create_user(username = username, email= email, password= password)
+                user.save()
+                login(request, user)
+                return redirect('/user/')
+            else:
+                messages.info(request, "Sign up not successful. Please check your password and confirm password")
 
     return render(request, 'user/sign-up.html')
 
@@ -86,6 +90,7 @@ def add_user(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
     email = request.POST.get('email')
+    user = User.objects.filter(username = username).first()
     user = User.objects.create_user(username = username, email= email, password= password)
     user.save()
     return HttpResponse("request successful")
