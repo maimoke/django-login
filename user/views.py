@@ -94,7 +94,9 @@ def add_user(request):
 @csrf_exempt
 def password_change(request):
     username = request.POST.get('username')
-    user = User.objects.get(username = username)
+    user = User.objects.filter(username = username).first()
+    if user is None:
+        return HttpResponse("Username not found")
     password = request.POST.get('password')
     user.set_password(password)
     user.save()
@@ -104,8 +106,9 @@ def password_change(request):
 @csrf_exempt
 def delete_user(request):
     username = request.POST.get('username')
-    print(username)
-    user = User.objects.get(username = username)
+    user = User.objects.filter(username = username).first()
+    if user is None:
+        return HttpResponse("Username not found")
     user.delete()
     return HttpResponse("request successful")
 
