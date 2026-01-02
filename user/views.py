@@ -71,6 +71,15 @@ def get_users_as_json(request):
     user_list = list(all_users)
     return JsonResponse(user_list, safe=False)
 
+#get specific
+def get_one_user(request,username):
+    User = get_user_model()
+    user = User.objects.filter(username=username).values("username", "email","password").first()
+    if user is not None:
+        return JsonResponse(user, safe=False)
+    else:
+        HttpResponse("Username not found")
+
 # post
 @csrf_exempt
 def add_user(request):
