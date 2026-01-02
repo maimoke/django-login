@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 from .form import RegisterForm
 
 
@@ -35,6 +36,9 @@ def sign_in(request):
             # Log user in
             login(request, user)
             return redirect('/user/')
+        else:
+            print("not successful")
+            messages.info(request, "Sign in not successful. Please check your username and password")
             
     return render(request, 'user/sign-in.html')
 
@@ -54,11 +58,10 @@ def sign_up(request):
             user.save()
             login(request, user)
             return redirect('/user/')
-    else:
-        form = RegisterForm()
-        print(form)
+        else:
+            messages.info(request, "Sign up not successful. Please check your password and confirm password")
 
-    return render(request, 'user/sign-up.html', {'form': form})
+    return render(request, 'user/sign-up.html')
 
 # get
 def get_users_as_json(request):
