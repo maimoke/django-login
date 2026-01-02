@@ -1,16 +1,19 @@
 from django.shortcuts import render,redirect
-from django.contrib.auth import login,authenticate,logout
+from django.contrib.auth import login,authenticate,logout,get_user_model
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-
+from django.http import JsonResponse
+from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
 from .form import RegisterForm
 
 
 
 @login_required
 def index(request):
-    return render(request, 'user/index.html')
+    current_user = request.user
+    return render(request, 'user/index.html',{'user': current_user})
 
 def sign_out(request):
     logout(request)
@@ -47,3 +50,41 @@ def sign_up(request):
         print(form)
 
     return render(request, 'user/sign-up.html', {'form': form})
+
+# get
+def get_users_as_json(request):
+    col = ["username", "email","password"]
+    User = get_user_model()
+    all_users = User.objects.all().values(*col)
+    user_list = list(all_users)
+    return JsonResponse(user_list, safe=False)
+
+# post
+@csrf_exempt
+def add_user(request):
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    email = request.POST.get('email')
+    user = User.objects.create_user(username = username, email= email, password= password)
+    user.save()
+    return HttpResponse("request successful")
+    
+# update
+@csrf_exempt
+def password_change(request):
+    username = request.POST.get('username')
+    user = User.objects.get(username = username)
+    password = request.POST.get('password')
+    user.set_password(password)
+    user.save()
+    return HttpResponse("request successful")
+
+# delete
+@csrf_exempt
+def delete_user(request):
+    username = request.POST.get('username')
+    print(username)
+    user = User.objects.get(username = username)
+    user.delete()
+    return HttpResponse("request successful")
+
