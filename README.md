@@ -1,6 +1,8 @@
-Login system test
+Login system test using Django
+
+test command
 ```
 cd login
 python manage.py runserver
 ```
-go to http://127.0.0.1:8000/user/
+and go to http://127.0.0.1:8000/user/
