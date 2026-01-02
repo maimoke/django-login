@@ -78,7 +78,7 @@ def get_one_user(request,username):
     if user is not None:
         return JsonResponse(user, safe=False)
     else:
-        HttpResponse("Username not found")
+        return HttpResponse("Username not found")
 
 # post
 @csrf_exempt
