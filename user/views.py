@@ -40,10 +40,19 @@ def sign_in(request):
 
 def sign_up(request):
     if request.method == "POST":
-        form = RegisterForm(request.POST)
-        print(form)
-        if form.is_valid():
-            form.save()
+        print(request.POST)
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        confirm = request.POST.get('confirm')
+        print(username)
+        print(email)
+        print(password)
+        print(confirm)
+        if (password == confirm):
+            user = User.objects.create_user(username = username, email= email, password= password)
+            user.save()
+            login(request, user)
             return redirect('/user/')
     else:
         form = RegisterForm()
